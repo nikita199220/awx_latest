@@ -1,2 +1,112 @@
 ---
 # tasks file for awx_azure
+- name: Install basic Packages for AWX
+  yum:
+    name: policycoreutils-python
+    state: present
+
+- name: disable selinux
+  selinux:
+    state: disabled
+
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
+- name: Install Epel Release Ansible and Memcached
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - epel-release
+    - centos-release-scl
+    - centos-release-scl-rh
+    - wget
+
+- name: Download ansible-awx repo
+  shell: wget -O /etc/yum.repos.d/ansible-awx.repo https://copr.fedorainfracloud.org/coprs/mrmeee/ansible-awx/repo/epel-7/mrmeee-ansible-awx-epel-7.repo
+
+- name: Create Rabbitmq Repo
+  yum_repository:
+    name: bintray-rabbitmq-rpm
+    baseurl: https://dl.bintray.com/rabbitmq/rpm/rabbitmq-server/v3.7.x/el/7/
+    gpgcheck: 0
+    repo_gpgcheck: 0
+    file: /etc/yum.repos.d/rabbitmq.repo
+    description: Rabbitmq repo
+    enabled: yes
+
+- name: Create Rabbitmq-erlang Repo
+  yum_repository:
+    name: bintraybintray-rabbitmq-erlang-rpm
+    baseurl: https://dl.bintray.com/rabbitmq-erlang/rpm/erlang/21/el/7/
+    gpgcheck: 0
+    repo_gpgcheck: 0
+    file: /etc/yum.repos.d/rabbitmq-erlang.repo
+    description: Rabbitmq-erlang repo
+    enabled: yes
+
+- name: Install basic Rabbitmq server for AWX
+  yum:
+    name: rabbitmq-server
+    state: present
+
+- name: Install rh reqired packages
+  yum: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - rh-git29
+    - rh-postgresql10 
+    - memcached 
+    - nginx 
+    - rh-python36 
+    - httpd24-httpd
+    - rh-python36-python 
+    - centos-release-scl-rh
+    - rh-python36-python-test
+    
+- name: Disable all not required repos
+  shell: yum -y install --disablerepo='*' --enablerepo='copr:copr.fedorainfracloud.org:mrmeee:ansible-awx, rhel-7-for-power-le-rpms, rhel-7-for-power-le-optional-rpms' -x *-debuginfo,*-sphinx-*,rh-python36-python-test rh-python36*
+
+- name: Install the required package
+  yum:
+    name: ansible-awx
+    state: present
+
+- name: Initialize database
+  shell: scl enable rh-postgresql10 "postgresql-setup initdb"
+
+- name: Ensure the PostgreSQL service is running
+  service: name=rh-postgresql10-postgresql.service state=started enabled=yes
+  ignore_errors: yes
+
+- name: Ensure the PostgreSQL service is running
+  service: name=rabbitmq-server state=started enabled=yes
+  ignore_errors: yes
+
+- name: create user in postgres
+  shell: scl enable rh-postgresql10 "su postgres -c \"createuser -S awx\""
+
+- name: Migrate the database
+  shell: sudo -u awx scl enable rh-python36 rh-postgresql10 rh-git29 "GIT_PYTHON_REFRESH=quiet awx-manage migrate"
+
+- name: Create Admin user
+  shell:  echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', 'password')" | sudo -u awx scl enable rh-python36 rh-postgresql10 "GIT_PYTHON_REFRESH=quiet awx-manage shell"
+
+- name: Enable required repos
+  shell: sudo -u awx scl enable rh-python36 rh-postgresql10 rh-git29 "GIT_PYTHON_REFRESH=quiet awx-manage create_preload_data" # Optional Sample Configuration
+
+- name: provision instance
+  shell: sudo -u awx scl enable rh-python36 rh-postgresql10 rh-git29 "GIT_PYTHON_REFRESH=quiet awx-manage provision_instance --hostname=$(hostname)"
+
+- name: register queue
+  shell: sudo -u awx scl enable rh-python36 rh-postgresql10 rh-git29 "GIT_PYTHON_REFRESH=quiet awx-manage register_queue --queuename=tower --hostnames=$(hostname)"
+
+- name: create nginx conf file
+  shell: sudo wget -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/MrMEEE/awx-build/master/nginx.conf
+   
+- name: finally start AWX
+  service: name=awx state=started enabled=yes
