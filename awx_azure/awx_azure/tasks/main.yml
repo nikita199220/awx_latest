@@ -66,7 +66,7 @@
     - rh-python36 
     - httpd24-httpd
    # - rh-python36-python
-    - centos-release-scl-rh
+   # - centos-release-scl-rh
    # - rh-python36-python-test
     
 - name: Disable all not required repos
@@ -93,9 +93,14 @@
   shell: scl enable rh-postgresql10 "su postgres -c \"createuser -S awx\""
   ignore_errors: yes
 
+- name: create database in postgres
+  shell: scl enable rh-postgresql10 "su postgres -c \"createdb -O awx awx\""
+  ignore_errors: yes
+
 - name: Migrate the database
   shell: sudo -u awx scl enable rh-python36 rh-postgresql10 rh-git29 "GIT_PYTHON_REFRESH=quiet awx-manage migrate"
   ignore_errors: yes
+
 - name: Create Admin user
   shell:  echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', 'password')" | sudo -u awx scl enable rh-python36 rh-postgresql10 "GIT_PYTHON_REFRESH=quiet awx-manage shell"
   ignore_errors: yes
