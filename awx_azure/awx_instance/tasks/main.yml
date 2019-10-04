@@ -1,0 +1,14 @@
+---
+# tasks file for awx_instance
+- name: Provision virtual machine example
+  azure:
+    name: my-virtual-machine
+    role_size: Small
+    image: awxclient-image-20191004141508
+    location: East US
+    user: ubuntu
+    ssh_cert_path: /path/to/azure_x509_cert.pem
+    storage_account: my-storage-account
+    wait: True
+    state: present
+  delegate_to: localhost

@@ -1,0 +1,5 @@
+- name: Provision Azure Instance
+  hosts: localhost
+  become: yes
+  roles:
+    - awx_instance
