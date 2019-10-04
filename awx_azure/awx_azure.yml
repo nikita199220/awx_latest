@@ -1,5 +1,5 @@
 - name: Install awx
-  hosts: localhost
+  hosts: install_awx
   become: yes
   roles:
     - awx_azure
