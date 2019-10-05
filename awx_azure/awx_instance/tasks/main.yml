@@ -1,7 +1,7 @@
 ---
 - name: Create virtual machine
   azure_rm_virtualmachine:
-    resource_group: nikita_resource_group
+    resource_group: nikita_resources
     name: testvm001
     vm_size: Standard_D1
     admin_username: admin
