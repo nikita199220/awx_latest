@@ -1,13 +1,11 @@
 ---
-- name: Create virtual machine
+- name: Create a VM with a custom image from a particular resource group
   azure_rm_virtualmachine:
-    resource_group: nikita_resource_group
+    resource_group: nikita_resources
     name: testvm001
-    vm_size: Standard_D1
-    admin_username: admin
-    admin_password: Password!
+    vm_size: Standard_DS1_v2
+    admin_username: adminUser
+    admin_password: password01
     image:
-      offer: CentOS
-      publisher: OpenLogic
-      sku: '7.1'
-      version: latest
+      name: awxclient-image-20191005172139
+      resource_group: nikita_resources

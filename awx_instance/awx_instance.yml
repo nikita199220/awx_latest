@@ -1,6 +1,5 @@
 - name: Provision Azure Instance
   hosts: localhost
-  connection: local
-  #become: yes
+  become: yes
   roles:
     - awx_instance
