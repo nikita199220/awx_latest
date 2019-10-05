@@ -1,0 +1,13 @@
+---
+- name: Create virtual machine
+  azure_rm_virtualmachine:
+    resource_group: nikita_resource_group
+    name: testvm001
+    vm_size: Standard_D1
+    admin_username: admin
+    admin_password: Password!
+    image:
+      offer: CentOS
+      publisher: OpenLogic
+      sku: '7.1'
+      version: latest
