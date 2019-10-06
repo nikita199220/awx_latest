@@ -16,13 +16,13 @@
         access: Allow
         priority: 101
         direction: Inbound
-      - name: SSH
+      - name: HTTP
         protocol: Tcp
         destination_port_range: 80
         access: Allow
         priority: 102
         direction: Inbound
-      - name: SSH
+      - name: HTTPS
         protocol: Tcp
         destination_port_range: 443
         access: Allow
