@@ -1,11 +1,11 @@
 ---
 - name: Create a VM with a custom image from a particular resource group
   azure_rm_virtualmachine:
-    resource_group: nikita_resources
+    resource_group: ing_resource
     name: testvm001
     vm_size: Standard_DS1_v2
     admin_username: adminUser
     admin_password: password01
     image:
-      name: awxclient-image-20191005172139
-      resource_group: nikita_resources
+      name: ingawxclient-image-20191005182301
+      resource_group: ing_resource
