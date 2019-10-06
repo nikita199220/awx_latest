@@ -3,6 +3,7 @@
   azure_rm_virtualmachine:
     resource_group: DryIce
     name: testvm10
+    network_interfaces: awx204
     admin_username: test
     admin_password: test@1234567890
     image:
