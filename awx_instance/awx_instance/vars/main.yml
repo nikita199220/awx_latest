@@ -1,2 +1,4 @@
 ---
-# vars file for awx_instance
+name: awx_server
+admin_username: awxadmin  
+admin_password: Qazxsw@12345
