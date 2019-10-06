@@ -1,11 +1,12 @@
 ---
-- name: Create a VM with a custom image from a particular resource group
+- name: Create VM with defaults
   azure_rm_virtualmachine:
-    resource_group: ing_resource
-    name: testvm001
-    vm_size: Standard_DS1_v2
-    admin_username: adminUser
-    admin_password: password01
+    resource_group: DryIce
+    name: testvm10
+    admin_username: test
+    admin_password: test
     image:
-      name: ingawxclient-image-20191005182301
-      resource_group: ing_resource
+      offer: CentOS
+      publisher: OpenLogic
+      sku: '7.1'
+      version: latest
