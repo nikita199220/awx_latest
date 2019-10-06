@@ -34,7 +34,7 @@
     resource_group: DryIce
     name: "{{ name }}"
     virtual_network: DryIce_Hybrid
-    subnet: private
+    subnet: PublicSubnet1
     public_ip_name: "{{ name }}"
     security_group: "{{ name }}"
 
