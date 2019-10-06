@@ -36,7 +36,7 @@
     virtual_network: DryIce_Hybrid
     subnet: private
     public_ip_name: "{{ name }}"
-    security_group: secgroup001
+    security_group: "{{ name }}"
 
 - name: Create VM with defaults
   azure_rm_virtualmachine:
