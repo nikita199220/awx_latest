@@ -24,7 +24,7 @@
     admin_username: "{{ admin_username }}"
     admin_password: "{{ admin_password }}"
     location: eastus2
-    vm_size: Standard_A1
+    vm_size: "{{ vm_size }}"
     network_interfaces: "{{ name }}"
     image: templatecentos7.5
     tags:
