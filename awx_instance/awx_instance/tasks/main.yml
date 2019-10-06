@@ -3,7 +3,6 @@
   azure_rm_virtualmachine:
     resource_group: DryIce
     name: testvm10
-    network_interfaces: awx204
     vm_size: Standard_A3
     state: present 
     admin_username: test
