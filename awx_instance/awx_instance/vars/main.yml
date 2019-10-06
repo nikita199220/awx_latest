@@ -1,4 +1,4 @@
 ---
-name: awx_server
+name: awxserver
 admin_username: awxadmin  
 admin_password: Qazxsw@12345
