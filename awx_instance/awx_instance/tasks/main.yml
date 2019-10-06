@@ -29,3 +29,6 @@
     image: templatecentos7.5
     tags:
       ing: "env"
+
+- pause:
+    minutes: 1
