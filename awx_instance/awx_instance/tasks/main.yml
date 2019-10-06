@@ -1,14 +1,50 @@
 ---
+- name: Create public ip
+  azure_rm_publicipaddress:
+    resource_group: DryIce
+    allocation_method: Static
+    name: "{{ name }}"
+
+- name: Create security group that allows SSH
+  azure_rm_securitygroup:
+    resource_group: DryIce
+    name: "{{ name }}"
+    rules:
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 101
+        direction: Inbound
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 80
+        access: Allow
+        priority: 102
+        direction: Inbound
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 443
+        access: Allow
+        priority: 103
+        direction: Inbound
+        
+- name: Create NIC
+  azure_rm_networkinterface:
+    resource_group: DryIce
+    name: "{{ name }}"
+    virtual_network: DryIce_Hybrid
+    subnet: private
+    public_ip_name: "{{ name }}"
+    security_group: secgroup001
+
 - name: Create VM with defaults
   azure_rm_virtualmachine:
     resource_group: DryIce
-    name: testvm10
-    vm_size: Standard_A3
-    state: present 
-    admin_username: nikita
-    admin_password: test@1234567890
-    image:
-      offer: CentOS
-      publisher: OpenLogic
-      sku: '7.1'
-      version: latest
+    name: "{{ name }}"
+    admin_username: "{{ admin_username }}"
+    admin_password: "{{ admin_password }}"
+    location: eastus2
+    vm_size: Standard_A1
+    network_interfaces: "{{ name }}"
+    image: templatecentos7.5
