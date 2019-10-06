@@ -5,7 +5,7 @@
     name: testvm10
     vm_size: Standard_A3
     state: present 
-    admin_username: test
+    admin_username: nikita
     admin_password: test@1234567890
     image:
       offer: CentOS
