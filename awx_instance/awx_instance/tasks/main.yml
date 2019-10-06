@@ -4,11 +4,13 @@
     resource_group: DryIce
     allocation_method: Static
     name: "{{ name }}"
+    location: eastus2
 
 - name: Create security group that allows SSH
   azure_rm_securitygroup:
     resource_group: DryIce
     name: "{{ name }}"
+    location: eastus2
     rules:
       - name: SSH
         protocol: Tcp
@@ -37,6 +39,7 @@
     subnet: PublicSubnet1
     public_ip_name: "{{ name }}"
     security_group: "{{ name }}"
+    location: eastus2
 
 - name: Create VM with defaults
   azure_rm_virtualmachine:
