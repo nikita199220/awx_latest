@@ -4,7 +4,7 @@
     resource_group: DryIce
     name: testvm10
     admin_username: test
-    admin_password: test
+    admin_password: test@1234567890
     image:
       offer: CentOS
       publisher: OpenLogic
