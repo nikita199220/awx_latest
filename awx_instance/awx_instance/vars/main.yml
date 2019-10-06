@@ -2,3 +2,4 @@
 name: awxserver
 admin_username: awxadmin  
 admin_password: Qazxsw@12345
+vm_size: Standard_D2s_v3
