@@ -12,7 +12,7 @@
     resource_group: DryIce
     name: "{{ name }}"
     virtual_network: DryIce_Hybrid
-    subnet: PublicSubnet1
+    subnet: private
     public_ip_name: "{{ name }}"
     security_group: DryIce_Hybrid
     location: eastus2
